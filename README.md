@@ -1,0 +1,1 @@
+Copy file .env.exmample, doi ten thanh .env và dieu chinh duong dan phu hop theo may ban
