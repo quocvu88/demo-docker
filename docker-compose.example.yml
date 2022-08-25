@@ -1,0 +1,41 @@
+version: '3'
+#Tao network la my-network
+networks:
+  my-network:
+    driver: bridge
+
+#Dich vu
+services:
+  #HTTPD
+  httpd:
+    build:
+      dockerfile: dockerfile
+      context: ${LOCAL_DIR}\dockerfile
+    container_name: httpd
+    hostname: httpd
+    restart: always
+    ports:
+      - "9999:80"
+      - "444:443"
+    volumes:
+      #- dir-site:/home/mycode/site/
+      - ${LOCAL_DIR}\site\:/home
+      #- /home/mycode/httpd.conf/:/usr/local/apache2/conf/httpd.conf
+      - ${LOCAL_DIR}\httpd.conf:/usr/local/apache2/conf/httpd.conf
+      #- /home/mycode/sites-available/:/usr/local/apache2/sites-available
+      - ${LOCAL_DIR}\sites-available:/usr/local/apache2/sites-available
+      #- /home/mycode/sites-enabled/:/usr/local/apache2/sites-enabled
+      - ${LOCAL_DIR}\sites-enabled:/usr/local/apache2/sites-enabled
+    networks:
+      - my-network  
+  
+  php:
+    image: "php:7.3-fpm"
+    container_name: php
+    hostname: php
+    restart: always
+    networks:
+      - my-network
+    volumes:
+      #- dir-site:/home/mycode/site/
+      - ${LOCAL_DIR}\site\:/home
